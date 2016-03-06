@@ -6,6 +6,7 @@
 
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 /**
@@ -36,18 +37,16 @@ public class Connect {
     }
     
     public DefaultTableModel getTransaction(){
-        try{
-            
+        try{   
             rs = st.executeQuery("Select * from JGMG_view_transaction");
             while(rs.next()){
                 Vector v2 = new Vector();
                 for(int i = 1; i < 10; i++){
-                    if(i != 8){
+                    if(8 != i){
                         v2.addElement(rs.getString(i));
                     }
                     else
-                        junk = rs.getString(i);
-                    
+                        junk = rs.getString(i);      
                 }
                 data.addElement(v2);
             }
@@ -64,6 +63,55 @@ public class Connect {
             System.out.println("Error: " + ex);
         }
         return new DefaultTableModel(data, colNames);
+    }
+    
+    public Vector getCustomers(){
+        String temp;
+        Vector cust = new Vector();
 
+        try{
+            rs = st.executeQuery("Select fname, lname from JGMG_Customer Order by lname asc");
+            while(rs.next()){
+                temp = rs.getString(1) + " " + rs.getString(2);
+                cust.addElement(temp);
+            }
+            
+        }
+        catch(SQLException ex){
+            System.out.println("Error: " + ex);
+        }
+        return cust;
+    }
+    
+    public Vector getTitles(){
+        Vector title = new Vector();
+        try{
+            rs = st.executeQuery("Select Title from JGMG_Product");
+            while(rs.next()){
+                title.addElement(rs.getString(1));
+            }
+        }
+        catch(SQLException ex){
+            System.out.println("Error: " + ex);
+        }
+        return title;
+    }
+    
+    public String getPrice(String Title){
+        String currentPrice = null;
+        Boolean found = false;
+        try{
+            rs = st.executeQuery("Select Title, currentPrice from JGMG_Product");
+            while(rs.next() && !found){
+                if(rs.getString(1).compareTo(Title) == 0){
+                    currentPrice = rs.getString(2);
+                    found = true;
+                }
+            }
+        }
+        catch(SQLException ex){
+            System.out.println("Error: " + ex);
+        }
+        return currentPrice;
     }
 }

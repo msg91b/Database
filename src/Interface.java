@@ -72,8 +72,13 @@ public class Interface extends javax.swing.JFrame {
         jButton8 = new javax.swing.JButton();
         jComboBox3 = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jButton9 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -84,7 +89,6 @@ public class Interface extends javax.swing.JFrame {
 
         jTable1.setEnabled(true);
         jTable1.setInheritsPopupMenu(true);
-        jTable1.setRowSelectionAllowed(true);
         jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(jTable1);
 
@@ -125,6 +129,7 @@ public class Interface extends javax.swing.JFrame {
         );
 
         jTabbedPane3.addTab("Transactions", jPanel1);
+        jTabbedPane3.removeTabAt(0);
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -169,6 +174,7 @@ public class Interface extends javax.swing.JFrame {
         );
 
         jTabbedPane3.addTab("Customers", jPanel3);
+        jTabbedPane3.removeTabAt(0);
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -218,6 +224,7 @@ public class Interface extends javax.swing.JFrame {
         );
 
         jTabbedPane3.addTab("Orders", jPanel2);
+        jTabbedPane3.removeTabAt(0);
 
         jButton4.setText("<-");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -230,6 +237,7 @@ public class Interface extends javax.swing.JFrame {
 
         jTextField1.setEditable(false);
         jTextField1.setToolTipText("ID of Employee who is making transaction");
+        jTextField1.setText(jTextField2.getText().toString());
 
         jLabel2.setText("Employee:");
 
@@ -281,6 +289,11 @@ public class Interface extends javax.swing.JFrame {
         });
 
         jButton8.setText("Complete Transaction");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(connect.getCustomers()));
 
@@ -343,9 +356,7 @@ public class Interface extends javax.swing.JFrame {
                                     .addComponent(jLabel1))
                                 .addGap(44, 44, 44)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addGap(21, 21, 21)
-                                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel4Layout.createSequentialGroup()
                                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -377,9 +388,55 @@ public class Interface extends javax.swing.JFrame {
         );
 
         jTabbedPane3.addTab("New Transaction", jPanel4);
-        jTabbedPane3.removeTabAt(3);
+        jTabbedPane3.removeTabAt(0);
+
+        jLabel8.setText("Please Enter EmployeeID:");
+
+        jButton9.setText("Enter");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton9)
+                .addGap(68, 68, 68))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(285, 285, 285)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(354, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(166, 166, 166)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel8)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
+                .addComponent(jButton9)
+                .addGap(48, 48, 48))
+        );
+
+        jTabbedPane3.addTab("Login", jPanel5);
 
         jMenu1.setText("File");
+
+        jMenuItem2.setText("Logout");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, java.awt.event.InputEvent.META_MASK));
         jMenuItem1.setText("Exit");
@@ -486,6 +543,48 @@ public class Interface extends javax.swing.JFrame {
         model.removeRow(jTable4.getSelectedRow());
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+        //Complete Transaction
+        Connect connect = new Connect();
+        String employeeID = jTextField1.getText();
+        String[] flname = jComboBox3.getSelectedItem().toString().split(" "); //split name into fName & lName
+        String customerID = connect.getCustomerID(flname[0], flname[1]);
+        String Total = jTable4.getValueAt(0, 2).toString();
+        String SaleID = connect.getNextSaleID();
+        System.out.println(SaleID);
+       // for(int i = 0; i < jTable4.getRowCount(); i++){
+       //     String Title = jTable4.getValueAt(i, 0).toString();
+       //     String productID = connect.getProductID(Title);
+       //     String Quantity = jTable4.getValueAt(i, 1).toString();
+       //     connect.completeTransaction(employeeID, customerID, productID, Title, Quantity, Total);
+       // }
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+        //login
+        Connect connect = new Connect();
+        if(connect.employeeLogin(jTextField2.getText())){
+            System.out.println("Great valid EmployeeID");
+            jTextField1.setText(jTextField2.getText());
+            jTabbedPane3.removeTabAt(0);
+            jTabbedPane3.addTab("Transactions", jPanel1);
+            jTabbedPane3.addTab("Customers", jPanel2);
+            jTabbedPane3.addTab("Orders", jPanel3);
+        }
+        else{
+            System.out.println("fuck this EmployeeID");
+        }
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        jTextField2.setText("");
+        jTabbedPane3.removeAll();
+        jTabbedPane3.add("Login", jPanel5);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -524,6 +623,7 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
@@ -532,13 +632,16 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -548,6 +651,7 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables

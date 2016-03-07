@@ -38,15 +38,11 @@ public class Connect {
     
     public DefaultTableModel getTransaction(){
         try{   
-            rs = st.executeQuery("Select * from JGMG_view_transaction");
+            rs = st.executeQuery("Select * from JGMG_view_transaction order by SALEID asc");
             while(rs.next()){
                 Vector v2 = new Vector();
-                for(int i = 1; i < 10; i++){
-                    if(8 != i){
+                for(int i = 1; i < 9; i++){    
                         v2.addElement(rs.getString(i));
-                    }
-                    else
-                        junk = rs.getString(i);      
                 }
                 data.addElement(v2);
             }
@@ -113,5 +109,70 @@ public class Connect {
             System.out.println("Error: " + ex);
         }
         return currentPrice;
+    }
+    
+    public void completeTransaction(String employeeID, String customerID, String productID, String Title, String Quantity, String Total){
+        try{
+            st.executeUpdate("Insert into JGMG_view_Transaction Values("+ employeeID + ", " + customerID + ", 588, " + productID + ", '" + Title + "', " + Quantity + ", trunc(sysdate), " + Total +")");
+        }
+        catch(SQLException ex){
+            System.out.println("Error: " + ex);
+        }
+    }
+    
+    public boolean employeeLogin(String employeeID){
+        boolean ret = false;
+        try{
+            rs = st.executeQuery("Select employeeID from JGMG_Employee where employeeID = " + employeeID);
+            if(rs.next()){
+                ret = true;
+            }
+        }
+        catch(SQLException ex){
+            System.out.println("Error: " + ex);
+        }
+        return ret;
+    }
+    
+    public String getCustomerID(String fName, String lName){
+        String customerID = null;
+        try{
+            rs = st.executeQuery("Select customerID from JGMG_Customer where fName = '" + fName + "' and lName = '" + lName + "'");
+            if(rs.next()){
+                customerID = rs.getString(1);
+            }                 
+        }
+        catch(SQLException ex){
+            System.out.println("Error: " + ex);
+        }   
+        return customerID;
+    }
+    
+    public String getProductID(String Title){
+        String productID = null;
+        try{
+            rs = st.executeQuery("Select productID from JGMG_Product where Title = '" + Title + "'");
+            if(rs.next()){
+                productID = rs.getString(1);
+            }
+        }
+        catch(SQLException ex){
+            System.out.println("Error: " + ex);
+        }
+        return productID;
+    }
+    
+    public String getNextSaleID(){
+        String saleID = null;
+        try{
+            rs = st.executeQuery("Select JGMG_SALE_SEQUENCE.NEXTVAL from JGMG_SALE");
+            if(rs.next()){
+                saleID = rs.getString(1);
+            }
+        }
+        catch(SQLException ex){
+            System.out.println("Error: " + ex);
+        }
+        return saleID;
     }
 }

@@ -6,7 +6,6 @@
 
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 /**
@@ -29,36 +28,11 @@ public class Connect {
             Class.forName("oracle.jdbc.OracleDriver");
             con = DriverManager.getConnection("jdbc:oracle:thin:@//delphi.cs.csubak.edu:1521/dbs01.cs.csubak", "winter342", "c3m4p2s");
             st = con.createStatement();
-            st.setFetchSize(5000);
+            //st.setFetchSize(5000);
         }
         catch(ClassNotFoundException | SQLException ex){
             System.out.println(ex);
         }
-    }
-    
-    public DefaultTableModel getTransaction(){
-        try{   
-            rs = st.executeQuery("Select * from JGMG_view_transaction order by SALEID asc");
-            while(rs.next()){
-                Vector v2 = new Vector();
-                for(int i = 1; i < 9; i++){    
-                        v2.addElement(rs.getString(i));
-                }
-                data.addElement(v2);
-            }
-            colNames.addElement("EmployeeID");
-            colNames.addElement("CustomerID");
-            colNames.addElement("SaleID");
-            colNames.addElement("ProductID");
-            colNames.addElement("Title");
-            colNames.addElement("Quantity");
-            colNames.addElement("Sale Date");
-            colNames.addElement("Total");
-        }
-        catch(SQLException ex){
-            System.out.println("Error: " + ex);
-        }
-        return new DefaultTableModel(data, colNames);
     }
     
     public Vector getCustomers(){
@@ -111,13 +85,16 @@ public class Connect {
         return currentPrice;
     }
     
-    public void completeTransaction(String employeeID, String customerID, String productID, String Title, String Quantity, String Total){
+    public void completeTransaction(String employeeID, String customerID, String saleID, String productID, String Title, String Quantity, String Total){
         try{
-            st.executeUpdate("Insert into JGMG_view_Transaction Values("+ employeeID + ", " + customerID + ", 588, " + productID + ", '" + Title + "', " + Quantity + ", trunc(sysdate), " + Total +")");
+          System.out.println("Insert into JGMG_view_Transaction Values("+ employeeID + ", " + customerID + ", " + saleID + ", " + productID + ", '" + Title + "', " + Quantity + ", " + "trunc(sysdate)" + ", " + Total +")");
+            st.executeUpdate("Insert into JGMG_view_Transaction Values("+ employeeID + ", " + customerID + ", " + saleID + ", " + productID + ", '" + Title + "', " + Quantity + ", " + "trunc(sysdate)" + ", " + Total +")");
         }
         catch(SQLException ex){
-            System.out.println("Error: " + ex);
+            System.out.println("Error: " + ex + "god damn");
+            System.out.println("Fuck you");
         }
+        
     }
     
     public boolean employeeLogin(String employeeID){
@@ -165,14 +142,28 @@ public class Connect {
     public String getNextSaleID(){
         String saleID = null;
         try{
-            rs = st.executeQuery("Select JGMG_SALE_SEQUENCE.NEXTVAL from JGMG_SALE");
+            rs = st.executeQuery("Select saleID from JGMG_SALE WHERE rownum = 1 order by saleID desc");
             if(rs.next()){
-                saleID = rs.getString(1);
+                saleID = "" + (Integer.parseInt(rs.getString(1)) + 1);
             }
         }
         catch(SQLException ex){
             System.out.println("Error: " + ex);
         }
         return saleID;
+    }
+    
+    public String getEmployeeName(String employeeID){
+        String employeeName = null;
+        try{
+            rs = st.executeQuery("Select efname, elname from JGMG_Employee where employeeID = '" + employeeID + "'");
+            if(rs.next()){
+                employeeName = rs.getString(1) + " " + rs.getString(2);
+            }
+        }
+        catch(SQLException ex){
+            System.out.println("Error: " + ex);
+        }
+        return employeeName;
     }
 }

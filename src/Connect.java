@@ -17,18 +17,15 @@ public class Connect {
     private Connection con;
     private Statement st;
     private ResultSet rs;
-    private String name;
-    private String price;
     Vector colNames = new Vector();
     Vector data = new Vector();
-    private String junk;
 
     public Connect(){
         try{
             Class.forName("oracle.jdbc.OracleDriver");
             con = DriverManager.getConnection("jdbc:oracle:thin:@//delphi.cs.csubak.edu:1521/dbs01.cs.csubak", "winter342", "c3m4p2s");
             st = con.createStatement();
-            //st.setFetchSize(5000);
+            st.setFetchSize(5000);
         }
         catch(ClassNotFoundException | SQLException ex){
             System.out.println(ex);
@@ -91,8 +88,7 @@ public class Connect {
             st.executeUpdate("Insert into JGMG_view_Transaction Values("+ employeeID + ", " + customerID + ", " + saleID + ", " + productID + ", '" + Title + "', " + Quantity + ", " + "trunc(sysdate)" + ", " + Total +")");
         }
         catch(SQLException ex){
-            System.out.println("Error: " + ex + "god damn");
-            System.out.println("Fuck you");
+            System.out.println("Error: " + ex);
         }
         
     }
@@ -166,4 +162,74 @@ public class Connect {
         }
         return employeeName;
     }
+    
+    public DefaultTableModel getAllCustomerData(){
+        Vector customer = new Vector();
+        Vector column = new Vector();
+        try{
+            rs = st.executeQuery("Select * from JGMG_Customer order by customerID asc");
+        
+            while(rs.next()){
+                String out;
+                Vector temp = new Vector();
+                for(int i = 1; i < 11; i++){
+                    out = rs.getString(i);
+                    //System.out.println(out);
+                    temp.addElement(out);
+                }
+                customer.addElement(temp);
+            }
+        }
+        catch(SQLException ex){
+            System.out.println("Error: " + ex + "here?");
+        }
+        
+        column.addElement("customerID");
+        column.addElement("First Name");
+        column.addElement("Last Name");
+        column.addElement("Street Number");
+        column.addElement("Street Name");
+        column.addElement("City");
+        column.addElement("State");
+        column.addElement("Zip");
+        column.addElement("Email Address");
+        column.addElement("Phone Number");
+            
+        DefaultTableModel model = new DefaultTableModel(customer, column);
+
+        return model;
+    }
+    
+    public DefaultTableModel getCustomerSearch(String searchFor){
+        Vector customer = new Vector();
+        Vector column = new Vector();
+        try{
+            rs = st.executeQuery("Select * from JGMG_Customer where fname like '" + searchFor + "'");
+            
+             while(rs.next()){
+                Vector temp = new Vector();
+                for(int i = 1; i < 11; i++){
+                    temp.addElement(rs.getString(i));
+                }
+                customer.addElement(temp);
+            }
+        }
+        catch(SQLException ex){
+            System.out.println("Error: " + ex);
+        }
+        column.addElement("customerID");
+        column.addElement("First Name");
+        column.addElement("Last Name");
+        column.addElement("Street Number");
+        column.addElement("Street Name");
+        column.addElement("City");
+        column.addElement("State");
+        column.addElement("Zip");
+        column.addElement("Email Address");
+        column.addElement("Phone Number");
+        
+        DefaultTableModel model = new DefaultTableModel(customer, column);
+        return model;
+    }
+    
 }

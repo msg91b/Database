@@ -170,12 +170,9 @@ public class Connect {
             rs = st.executeQuery("Select * from JGMG_Customer order by customerID asc");
         
             while(rs.next()){
-                String out;
                 Vector temp = new Vector();
                 for(int i = 1; i < 11; i++){
-                    out = rs.getString(i);
-                    //System.out.println(out);
-                    temp.addElement(out);
+                    temp.addElement(rs.getString(i));
                 }
                 customer.addElement(temp);
             }
@@ -201,35 +198,41 @@ public class Connect {
     }
     
     public DefaultTableModel getCustomerSearch(String searchFor){
-        Vector customer = new Vector();
-        Vector column = new Vector();
-        try{
-            rs = st.executeQuery("Select * from JGMG_Customer where fname like '" + searchFor + "'");
-            
-             while(rs.next()){
-                Vector temp = new Vector();
-                for(int i = 1; i < 11; i++){
-                    temp.addElement(rs.getString(i));
+        DefaultTableModel model = getAllCustomerData();
+        Vector v1 = new Vector();
+        Vector v2 = new Vector();
+        boolean check;
+        String temp;
+        for(int row = 0; row < model.getRowCount(); row++){
+            check = true;
+            for(int col = 0; col < model.getColumnCount() && check; col++){
+                if(model.getValueAt(row, col) != null){
+                    temp = (String) model.getValueAt(row, col);
+                    
+                    int searchLength = searchFor.length();
+                    if(temp.length() >= searchLength){
+                        if(temp.substring(0, searchLength).compareTo(searchFor) == 0){
+                            v1.addElement(model.getDataVector().elementAt(row));
+                            check = false;
+                        }
+                    }
                 }
-                customer.addElement(temp);
             }
         }
-        catch(SQLException ex){
-            System.out.println("Error: " + ex);
-        }
-        column.addElement("customerID");
-        column.addElement("First Name");
-        column.addElement("Last Name");
-        column.addElement("Street Number");
-        column.addElement("Street Name");
-        column.addElement("City");
-        column.addElement("State");
-        column.addElement("Zip");
-        column.addElement("Email Address");
-        column.addElement("Phone Number");
-        
-        DefaultTableModel model = new DefaultTableModel(customer, column);
-        return model;
+        v2.addElement("customerID");
+        v2.addElement("First Name");
+        v2.addElement("Last Name");
+        v2.addElement("Street Number");
+        v2.addElement("Street Name");
+        v2.addElement("City");
+        v2.addElement("State");
+        v2.addElement("Zip");
+        v2.addElement("Email Address");
+        v2.addElement("Phone Number");
+
+    DefaultTableModel newModel = new DefaultTableModel(v1,v2);
+    return newModel;  
     }
-    
+   
 }
+

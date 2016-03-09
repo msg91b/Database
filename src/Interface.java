@@ -184,11 +184,28 @@ public class Interface extends javax.swing.JFrame {
 
         jTextField6.setText("Search");
         jTextField6.addKeyListener(new KeyAdapter(){
-
             @Override
-            public void keyPressed(KeyEvent e){
-                model = connect.getCustomerSearch(jTextField6.getText());
-                jTable3.setModel(model);
+            public void keyReleased(KeyEvent e){
+                int key = e.getKeyChar();
+                if(Character.isLetterOrDigit(key) || key == KeyEvent.VK_BACK_SPACE){
+                    String input = jTextField6.getText();
+                    System.out.println(input);
+                    model = connect.getCustomerSearch(input);
+                    jTable3.setModel(model);
+                }
+                else {
+                    System.out.println("Delete pressed");
+                }
+            }
+        });
+        jTextField6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField6ActionPerformed(evt);
+            }
+        });
+        jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField6KeyTyped(evt);
             }
         });
 
@@ -751,6 +768,14 @@ public class Interface extends javax.swing.JFrame {
         // TODO add your handling code here:
         jDialog1.dispose();
     }//GEN-LAST:event_jDialog1KeyPressed
+
+    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField6ActionPerformed
+
+    private void jTextField6KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField6KeyTyped
 
     /**
      * @param args the command line arguments

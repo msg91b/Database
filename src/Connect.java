@@ -5,6 +5,7 @@
  */
 
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
@@ -172,27 +173,40 @@ public class Connect {
             while(rs.next()){
                 Vector temp = new Vector();
                 for(int i = 1; i < 11; i++){
-                    temp.addElement(rs.getString(i));
+                    if(i == 2 || i == 4){
+                        temp.addElement(rs.getString(i) + " " + rs.getString(i+1));
+                        i++;
+                    }
+                    else{
+                        temp.addElement(rs.getString(i));
+                    }
                 }
                 customer.addElement(temp);
             }
         }
         catch(SQLException ex){
-            System.out.println("Error: " + ex + "here?");
+            System.out.println("Error: " + ex);
         }
         
         column.addElement("customerID");
-        column.addElement("First Name");
-        column.addElement("Last Name");
-        column.addElement("Street Number");
-        column.addElement("Street Name");
+        column.addElement("Name");
+        column.addElement("Address");
         column.addElement("City");
         column.addElement("State");
         column.addElement("Zip");
-        column.addElement("Email Address");
+        column.addElement("Email");
         column.addElement("Phone Number");
             
-        DefaultTableModel model = new DefaultTableModel(customer, column);
+        DefaultTableModel model = new DefaultTableModel(customer, column){
+            boolean[] canEdit = new boolean [] {
+            false, false, false, false, false, false, false, false, false
+        };
+
+            @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return canEdit [columnIndex];
+        }
+        };
 
         return model;
     }
@@ -220,19 +234,115 @@ public class Connect {
             }
         }
         v2.addElement("customerID");
-        v2.addElement("First Name");
-        v2.addElement("Last Name");
-        v2.addElement("Street Number");
-        v2.addElement("Street Name");
+        v2.addElement("Name");
+        v2.addElement("Address");
         v2.addElement("City");
         v2.addElement("State");
         v2.addElement("Zip");
-        v2.addElement("Email Address");
+        v2.addElement("Email");
         v2.addElement("Phone Number");
 
-    DefaultTableModel newModel = new DefaultTableModel(v1,v2);
+    DefaultTableModel newModel = new DefaultTableModel(v1,v2){
+            boolean[] canEdit = new boolean [] {
+            false, false, false, false, false, false, false, false, false
+        };
+
+            @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return canEdit [columnIndex];
+        }
+        };
     return newModel;  
     }
+    
+    public BigDecimal getNextCustomerID(){
+        BigDecimal nextID = null;
+        try{
+            rs = st.executeQuery("Select customerID from JGMG_Customer WHERE rownum = 1 order by CustomerID desc");
+            if(rs.next()){
+                nextID = BigDecimal.valueOf(Long.parseLong(rs.getString(1))+1);
+            }
+        }
+        catch(SQLException ex){
+            System.out.println("Error:" + ex);
+        }
+        return nextID;
+    }
+    
+    public void addCustomer(String n, String a, String c, String s, String z, String e, String p){
+        String[] flname = n.split(" ");
+        String[] address = a.split(" ");
+        String streetName = "";
+        
+        System.out.println(getNextCustomerID());
+        BigDecimal streetNum = BigDecimal.valueOf(Long.parseLong(address[0]) + 1);
+        // Concatonate streetName back into a string
+        for(int i = 1; i < address.length; i++){ // need to start at 1 because first element will be street num
+            if(i == address.length-1){
+                streetName += address[i];
+            }
+            else{
+                streetName += address[i] + " ";
+            }
+        }
+        
+        BigDecimal zip = BigDecimal.valueOf(Long.parseLong(z));
+        BigDecimal phone = null;
+        if(p.compareTo("") != 0){
+            phone = BigDecimal.valueOf(Long.parseLong(p));
+        }   
+        
+        System.out.println(streetName);
+       try{
+        PreparedStatement na = con.prepareStatement("Insert into JGMG_Customer Values (?,?,?,?,?,?,?,?,?,?)");
+        na.setBigDecimal(1, getNextCustomerID());
+        na.setString(2, flname[0]);
+        na.setString(3, flname[1]);
+        na.setBigDecimal(4, streetNum);
+        na.setString(5, streetName);
+        na.setString(6, c);
+        na.setString(7, s);
+        na.setBigDecimal(8, zip);
+        na.setString(9, e);
+        na.setBigDecimal(10, phone);
+        
+        na.executeUpdate();
+       }
+       catch(SQLException ex){
+           System.out.println("Error: " + ex);
+       }
+    }
    
+    public DefaultTableModel getSelectedSales(String name){
+        String[] flname = name.split(" ");
+        String customerID = getCustomerID(flname[0], flname[1]);
+        Vector data = new Vector();
+        Vector col = new Vector();
+        try{
+            PreparedStatement na = con.prepareStatement("Select unique saleID, \"Sale Date\", Total From JGMG_view_transaction where customerID = ? ORDER BY saleID");
+            na.setBigDecimal(1, BigDecimal.valueOf(Long.parseLong(customerID)));
+            rs = na.executeQuery();
+            
+            while(rs.next()){
+                Vector temp = new Vector();
+                //System.out.println(rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3));
+                temp.addElement(rs.getString(1));
+                temp.addElement(rs.getString(2).substring(0, 10));
+                temp.addElement(rs.getString(3));
+                data.addElement(temp);
+                }
+            
+            
+            col.addElement("saleID");
+            col.addElement("Sale Date");
+            col.addElement("Total");
+        }
+        catch(SQLException ex){
+            System.out.println("Error: " + ex);
+        }
+        
+        DefaultTableModel model = new DefaultTableModel(data, col);
+        return model;
+    }
 }
 

@@ -7,8 +7,13 @@
 
 import java.math.BigDecimal;
 import java.sql.*;
+import java.util.HashMap;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.view.*;
+import java.util.Map;
+
 /**
  *
  * @author mattgaitan
@@ -20,6 +25,7 @@ public class Connect {
     private ResultSet rs;
     Vector colNames = new Vector();
     Vector data = new Vector();
+    
 
     public Connect(){
         try{
@@ -269,8 +275,7 @@ public class Connect {
         return nextID;
     }
     
-    public void addCustomer(String n, String a, String c, String s, String z, String e, String p){
-        String[] flname = n.split(" ");
+    public void addCustomer(String fn, String ln, String a, String c, String s, String z, String e, String p){
         String[] address = a.split(" ");
         String streetName = "";
         
@@ -296,8 +301,8 @@ public class Connect {
        try{
         PreparedStatement na = con.prepareStatement("Insert into JGMG_Customer Values (?,?,?,?,?,?,?,?,?,?)");
         na.setBigDecimal(1, getNextCustomerID());
-        na.setString(2, flname[0]);
-        na.setString(3, flname[1]);
+        na.setString(2, fn);
+        na.setString(3, ln);
         na.setBigDecimal(4, streetNum);
         na.setString(5, streetName);
         na.setString(6, c);
@@ -341,8 +346,119 @@ public class Connect {
             System.out.println("Error: " + ex);
         }
         
-        DefaultTableModel model = new DefaultTableModel(data, col);
+        DefaultTableModel model = new DefaultTableModel(data, col){boolean[] canEdit = new boolean [] {
+        false, false, false
+    };
+
+        @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return canEdit [columnIndex];
+    }};
         return model;
+    }
+    
+    public DefaultTableModel getAllSuppliersData() {
+        Vector data = new Vector();
+        Vector supp = new Vector();
+        try {
+            rs = st.executeQuery("SELECT unique orderID, supplierID, cDate FROM JGMG_Orders ORDER BY OrderID asc");
+            while(rs.next()) {
+                String out;
+                Vector temp = new Vector();
+                for(int i=1; i < 4; i++) {
+                    if(i==3){
+                        out = rs.getString(i).substring(0, 10);
+                    }
+                    else{
+                        out = rs.getString(i);
+                    }
+                    temp.addElement(out);
+                }
+                supp.addElement(temp);
+            }
+        }catch(SQLException ex) {
+            System.out.println("Error: " + ex);
+        }
+        data.addElement("OrderID");
+        data.addElement("SupplierID");
+        data.addElement("Order Date");
+        DefaultTableModel model = new DefaultTableModel(supp, data){boolean[] canEdit = new boolean [] {
+        false, false, false
+    };
+
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return canEdit [columnIndex];
+    }};
+        return model;
+    }
+    
+    public Vector getSuppliers() {
+        String temp;
+        Vector supp = new Vector();
+        try {
+            rs = st.executeQuery("SELECT * FROM JGMG_Orders ORDER BY OrderID asc");
+            while(rs.next()) {
+                temp = rs.getString(1)+ " " + rs.getString(2) + " " + rs.getString(3)+ " " + rs.getString(4) + " " + rs.getString(5)+ " " + rs.getString(6) + " " + rs.getString(7);
+                supp.addElement(temp);
+            }
+        }catch(SQLException ex) {
+            System.out.println("Error: " + ex);
+        }
+        return supp;
+    }
+    
+    public DefaultTableModel getSupplierSearch (String searchSupp) {
+        DefaultTableModel model = getAllSuppliersData();
+        Vector v1 = new Vector();
+        Vector v2 = new Vector();
+        boolean check;
+        String temp;
+        for(int row = 0; row < model.getRowCount(); row++){
+            check = true;
+            for(int col = 0; col < model.getColumnCount() && check; col++){
+                if(model.getValueAt(row, col) != null){
+                    temp = (String) model.getValueAt(row, col);
+                    
+                    int searchLength = searchSupp.length();
+                    if(temp.length() >= searchLength){
+                        if(temp.substring(0, searchLength).compareTo(searchSupp) == 0){
+                            v1.addElement(model.getDataVector().elementAt(row));
+                            check = false;
+                        }
+                    }
+                }
+            }
+        }
+        v2.addElement("SupplierID");
+        v2.addElement("Street Number");
+        v2.addElement("Street Name");
+        v2.addElement("City");
+        v2.addElement("State");
+        v2.addElement("Zip");
+        v2.addElement("Phone Number");
+
+    DefaultTableModel newModel = new DefaultTableModel(v1,v2){boolean[] canEdit = new boolean [] {
+        false, false, false
+    };
+
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return canEdit [columnIndex];
+    }};
+    return newModel;  
+    }
+    
+    public void generateSaleReciept(int s){
+        try{
+            HashMap m = new HashMap();
+            String report = "//Users//mattgaitan//Desktop//dbgit 2//Database//src//saleReport.jrxml";
+            JasperReport jR = JasperCompileManager.compileReport(report);
+            m.put("saleID", s);
+            JasperPrint jP = JasperFillManager.fillReport(jR, m, con);
+            JasperViewer.viewReport(jP, false);
+            }
+            catch(Exception ex){
+                System.out.println("Error: " + ex);
+            }
     }
 }
 

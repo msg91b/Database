@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Sales Reciept" language="groovy" pageWidth="212" pageHeight="464" whenNoDataType="BlankPage" columnWidth="212" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="83c7f031-74e9-464b-ac80-7ec695a2cb72">
-	<property name="ireport.zoom" value="2.0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Sales Reciept" language="groovy" pageWidth="252" pageHeight="504" whenNoDataType="BlankPage" columnWidth="214" leftMargin="19" rightMargin="19" topMargin="19" bottomMargin="19" isIgnorePagination="true" uuid="83c7f031-74e9-464b-ac80-7ec695a2cb72">
+	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<subDataset name="dataset1" uuid="9f75a6cc-b6a4-4425-8388-8c01355cbf94"/>
 	<parameter name="saleID" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[$P{saleID}]]></defaultValueExpression>
 	</parameter>
@@ -39,28 +40,28 @@ WHERE
 			<elementGroup>
 				<elementGroup>
 					<staticText>
-						<reportElement x="0" y="2" width="212" height="10" uuid="fa96a4b8-6b7b-420d-ad5b-62fe74d78024"/>
+						<reportElement x="0" y="2" width="214" height="10" uuid="fa96a4b8-6b7b-420d-ad5b-62fe74d78024"/>
 						<textElement textAlignment="Center">
 							<font size="6"/>
 						</textElement>
 						<text><![CDATA[Job's Musical Store Extravaganza!]]></text>
 					</staticText>
 					<staticText>
-						<reportElement x="0" y="23" width="212" height="9" uuid="d475ef47-c1f8-41c7-be9d-5beaff58824c"/>
+						<reportElement x="0" y="23" width="214" height="9" uuid="d475ef47-c1f8-41c7-be9d-5beaff58824c"/>
 						<textElement textAlignment="Center">
 							<font size="6"/>
 						</textElement>
 						<text><![CDATA[661-867-5309]]></text>
 					</staticText>
 					<staticText>
-						<reportElement x="0" y="9" width="212" height="10" uuid="590c28a0-e540-4acf-9404-81407fe95ead"/>
+						<reportElement x="0" y="9" width="214" height="10" uuid="590c28a0-e540-4acf-9404-81407fe95ead"/>
 						<textElement textAlignment="Center">
 							<font size="6"/>
 						</textElement>
 						<text><![CDATA[2613 California Ave]]></text>
 					</staticText>
 					<staticText>
-						<reportElement x="0" y="16" width="212" height="10" uuid="560f743c-64ba-418a-9bbe-b876120e249b"/>
+						<reportElement x="0" y="16" width="214" height="10" uuid="560f743c-64ba-418a-9bbe-b876120e249b"/>
 						<textElement textAlignment="Center">
 							<font size="6"/>
 						</textElement>
@@ -80,15 +81,15 @@ WHERE
 				<textFieldExpression><![CDATA[new SimpleDateFormat("MM/dd/yyyy").format($F{Sale Date})]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="172" y="0" width="26" height="13" uuid="fa2595fb-ea30-4201-8d85-fe871e68da1f"/>
+				<reportElement x="164" y="0" width="26" height="13" uuid="fa2595fb-ea30-4201-8d85-fe871e68da1f"/>
 				<textElement textAlignment="Right">
 					<font size="6"/>
 				</textElement>
 				<text><![CDATA[SaleID:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="198" y="0" width="14" height="13" uuid="5172da63-8ccc-4cee-a83f-e62885438ab6"/>
-				<textElement textAlignment="Right">
+				<reportElement x="190" y="0" width="24" height="13" uuid="5172da63-8ccc-4cee-a83f-e62885438ab6"/>
+				<textElement textAlignment="Center">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{saleID}]]></textFieldExpression>
@@ -96,9 +97,9 @@ WHERE
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="21">
+		<band height="22">
 			<line>
-				<reportElement x="0" y="20" width="212" height="1" forecolor="#666666" uuid="b63c8ecb-bc68-4673-90eb-62a44cbb56eb"/>
+				<reportElement x="0" y="20" width="214" height="1" forecolor="#666666" uuid="b63c8ecb-bc68-4673-90eb-62a44cbb56eb"/>
 			</line>
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="0" width="101" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="fcf26874-21e1-4029-92e5-d14e58715992"/>
@@ -115,7 +116,7 @@ WHERE
 				<text><![CDATA[QUANTITY]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="164" y="0" width="48" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="8003adfe-1dc9-4d38-8b65-584702ca2664"/>
+				<reportElement mode="Opaque" x="164" y="0" width="50" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="8003adfe-1dc9-4d38-8b65-584702ca2664"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -141,7 +142,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{QUANTITY}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="164" y="0" width="48" height="10" uuid="abd4041d-35b4-45b2-9f4e-5510333cb657"/>
+				<reportElement x="164" y="0" width="50" height="10" uuid="abd4041d-35b4-45b2-9f4e-5510333cb657"/>
 				<textElement textAlignment="Center">
 					<font size="6"/>
 				</textElement>
@@ -162,21 +163,21 @@ WHERE
 				<text><![CDATA[TOTAL:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="164" y="1" width="48" height="10" uuid="a28f79cb-5a4f-4593-984d-3ab931c59c5a"/>
+				<reportElement x="164" y="1" width="50" height="10" uuid="a28f79cb-5a4f-4593-984d-3ab931c59c5a"/>
 				<textElement textAlignment="Center">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{TOTAL}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="17" width="212" height="10" uuid="601c0d25-b02a-4c2b-a0c3-2c3d4634d446"/>
+				<reportElement x="0" y="17" width="214" height="10" uuid="601c0d25-b02a-4c2b-a0c3-2c3d4634d446"/>
 				<textElement textAlignment="Center">
 					<font size="6"/>
 				</textElement>
 				<text><![CDATA[Have a fun music filled day!]]></text>
 			</staticText>
 			<line>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="212" height="1" uuid="2869dfad-c23f-4462-94af-ee6a2dec4c83"/>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="214" height="1" uuid="2869dfad-c23f-4462-94af-ee6a2dec4c83"/>
 			</line>
 		</band>
 	</pageFooter>

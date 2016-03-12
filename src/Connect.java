@@ -12,7 +12,6 @@ import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.view.*;
-import java.util.Map;
 
 /**
  *
@@ -42,6 +41,8 @@ public class Connect {
     public Vector getCustomers(){
         String temp;
         Vector cust = new Vector();
+        
+        cust.addElement("");
 
         try{
             rs = st.executeQuery("Select fname, lname from JGMG_Customer Order by lname asc");
@@ -357,11 +358,11 @@ public class Connect {
         return model;
     }
     
-    public DefaultTableModel getAllSuppliersData() {
+    public DefaultTableModel getAllOrdersData() {
         Vector data = new Vector();
         Vector supp = new Vector();
         try {
-            rs = st.executeQuery("SELECT unique orderID, supplierID, cDate FROM JGMG_Orders ORDER BY OrderID asc");
+            rs = st.executeQuery("SELECT unique orderID, supplierID, cDate FROM JGMG_view_Orders ORDER BY OrderID asc");
             while(rs.next()) {
                 String out;
                 Vector temp = new Vector();
@@ -392,11 +393,11 @@ public class Connect {
         return model;
     }
     
-    public Vector getSuppliers() {
+    public Vector getOrders() {
         String temp;
         Vector supp = new Vector();
         try {
-            rs = st.executeQuery("SELECT * FROM JGMG_Orders ORDER BY OrderID asc");
+            rs = st.executeQuery("SELECT * FROM JGMG_view_Orders ORDER BY OrderID asc");
             while(rs.next()) {
                 temp = rs.getString(1)+ " " + rs.getString(2) + " " + rs.getString(3)+ " " + rs.getString(4) + " " + rs.getString(5)+ " " + rs.getString(6) + " " + rs.getString(7);
                 supp.addElement(temp);
@@ -407,8 +408,8 @@ public class Connect {
         return supp;
     }
     
-    public DefaultTableModel getSupplierSearch (String searchSupp) {
-        DefaultTableModel model = getAllSuppliersData();
+    public DefaultTableModel getOrdersSearch(String searchOrder) {
+        DefaultTableModel model = getAllOrdersData();
         Vector v1 = new Vector();
         Vector v2 = new Vector();
         boolean check;
@@ -419,9 +420,9 @@ public class Connect {
                 if(model.getValueAt(row, col) != null){
                     temp = (String) model.getValueAt(row, col);
                     
-                    int searchLength = searchSupp.length();
+                    int searchLength = searchOrder.length();
                     if(temp.length() >= searchLength){
-                        if(temp.substring(0, searchLength).compareTo(searchSupp) == 0){
+                        if(temp.substring(0, searchLength).compareTo(searchOrder) == 0){
                             v1.addElement(model.getDataVector().elementAt(row));
                             check = false;
                         }
@@ -429,18 +430,15 @@ public class Connect {
                 }
             }
         }
+        v2.addElement("OrderID");
         v2.addElement("SupplierID");
-        v2.addElement("Street Number");
-        v2.addElement("Street Name");
-        v2.addElement("City");
-        v2.addElement("State");
-        v2.addElement("Zip");
-        v2.addElement("Phone Number");
+        v2.addElement("Order Date");
 
     DefaultTableModel newModel = new DefaultTableModel(v1,v2){boolean[] canEdit = new boolean [] {
-        false, false, false
+        false, false, false, false, false, false, false
     };
 
+    @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return canEdit [columnIndex];
     }};
@@ -450,8 +448,8 @@ public class Connect {
     public void generateSaleReciept(int s){
         try{
             HashMap m = new HashMap();
-            String report = "//Users//mattgaitan//Desktop//dbgit 2//Database//src//saleReport.jrxml";
-            JasperReport jR = JasperCompileManager.compileReport(report);
+            String report = "saleReport.jrxml";
+            JasperReport jR = JasperCompileManager.compileReport(getClass().getResourceAsStream(report));
             m.put("saleID", s);
             JasperPrint jP = JasperFillManager.fillReport(jR, m, con);
             JasperViewer.viewReport(jP, false);
@@ -459,6 +457,66 @@ public class Connect {
             catch(Exception ex){
                 System.out.println("Error: " + ex);
             }
+    }
+    
+    public String latestCustomer(){
+        String name = null;
+
+        try{
+            rs = st.executeQuery("SELECT fname, lname from JGMG_Customer where rownum = 1 order by customerID desc");
+            if(rs.next()){
+                name = rs.getString(1) + " " + rs.getString(2);
+            }
+                    
+        }
+        catch(SQLException ex){
+            System.out.println("Error: " + ex);
+        }
+        return name;
+    }
+    
+    public BigDecimal getNextItemID(){
+        BigDecimal nextItemID = null;
+        try{
+            rs = st.executeQuery("Select * from JGMG_Item where rownum = 1 order by itemID desc");
+            if(rs.next()){
+                nextItemID = BigDecimal.valueOf(Long.parseLong(rs.getString(1)) + 1);
+            }
+        }
+        catch(SQLException ex){
+            System.out.println("Error: " + ex);
+        }
+        return nextItemID;
+    }
+    
+    public void completeRequest(String t, String q, String n){
+        String[] flname = n.split(" ");
+        try{
+            PreparedStatement ps = con.prepareStatement("Insert into JGMG_view_requests Values(?,?,?,?,trunc(sysdate))");
+            ps.setBigDecimal(1, getNextItemID());
+            ps.setBigDecimal(2, BigDecimal.valueOf(Long.parseLong(getCustomerID(flname[0], flname[1])) + 1));
+            ps.setString(3, t);
+            ps.setBigDecimal(4, BigDecimal.valueOf(Long.parseLong(q)));
+            
+            ps.executeUpdate();
+        }
+        catch(SQLException ex){
+            System.out.println("Error: " + ex);
+        }
+    }
+    
+    public void generateOrderInvoice(int orderID){
+        try{
+            HashMap m = new HashMap();
+            String report = "orderInvoice.jrxml";
+            JasperReport jR = JasperCompileManager.compileReport(getClass().getResourceAsStream(report));
+            m.put("orderID", orderID);
+            JasperPrint jP = JasperFillManager.fillReport(jR, m, con);
+            JasperViewer.viewReport(jP, false);
+        }
+        catch(Exception ex){
+            System.out.println("Error: " + ex);
+        }
     }
 }
 

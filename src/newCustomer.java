@@ -229,22 +229,6 @@ public class newCustomer extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField6ActionPerformed
 
-    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
-        // TODO add your handling code here:
-        String fname = jTextField1.getText(); // first name
-        String lname = jTextField8.getText(); // last name
-        String address = jTextField2.getText(); //Address
-        String city = jTextField3.getText(); // city
-        String state = jTextField4.getText(); //state
-        String zip = jTextField5.getText(); //zip
-        String email = jTextField6.getText(); // Email
-        String phone = jTextField7.getText(); //phone
-        Connect con = new Connect();
-        con.addCustomer(fname, lname, address, city, state, zip, email, phone);
-        this.dispose();
-        
-    }//GEN-LAST:event_jToggleButton1ActionPerformed
-
     private void jTextField6FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField6FocusGained
         // TODO add your handling code here:
         if(jTextField1.getText().compareTo("example@website.com") == 0){
@@ -300,6 +284,22 @@ public class newCustomer extends javax.swing.JFrame {
             jTextField1.setText("");
         }
     }//GEN-LAST:event_jTextField8FocusGained
+
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        // TODO add your handling code here:
+        String fname = jTextField1.getText(); // first name
+        String lname = jTextField8.getText(); // last name
+        String address = jTextField2.getText(); //Address
+        String city = jTextField3.getText(); // city
+        String state = jTextField4.getText(); //state
+        String zip = jTextField5.getText(); //zip
+        String email = jTextField6.getText(); // Email
+        String phone = jTextField7.getText(); //phone
+        Connect con = new Connect();
+        con.addCustomer(fname, lname, address, city, state, zip, email, phone);
+        this.dispose();
+
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     /**
      * @param args the command line arguments

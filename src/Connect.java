@@ -518,5 +518,53 @@ public class Connect {
             System.out.println("Error: " + ex);
         }
     }
+    
+    public Vector getSuppliers(){
+        Vector suppliers = new Vector();
+        try{
+        rs = st.executeQuery("Select SUPPLIERID from JGMG_Supplier order by supplierID asc");
+        while(rs.next()){
+            suppliers.addElement(rs.getString(1));
+        }
+        }
+        catch(SQLException ex){
+            System.out.println("Error: " + ex);
+        }
+        return suppliers;
+    }
+    
+    public BigDecimal getNextOrderID(){
+        BigDecimal orderID = null;
+        try{
+            rs = st.executeQuery("Select orderID from JGMG_Order where rownum = 1 order by orderID desc");
+            if(rs.next()){
+                orderID = BigDecimal.valueOf(Long.parseLong(rs.getString(1)) + 1);
+            }
+            System.out.println(orderID);
+        }
+        catch(SQLException ex){
+            System.out.println("Error: " + ex);
+        }
+        return orderID;
+    }
+    
+    public void addOrder(BigDecimal o, String s, String p, String t, String q){
+        try{
+            
+            PreparedStatement ps = con.prepareStatement("Insert into JGMG_view_orders values(?,?,?,?,?,trunc(sysdate))");
+            ps.setBigDecimal(1, o);
+            ps.setBigDecimal(2, BigDecimal.valueOf(Long.parseLong(s)));
+            ps.setBigDecimal(3, BigDecimal.valueOf(Long.parseLong(p)));
+            ps.setString(4, t);
+            ps.setBigDecimal(5, BigDecimal.valueOf(Long.parseLong(q)));
+            System.out.println("Insert into JGMG_view_orders values(" + o + ", " + s + ", " + p + ", " + t + ", " + q + ", " + "trunc(sysdate)" +")");
+            
+            ps.executeQuery();
+            
+        }
+        catch(SQLException ex){
+            System.out.println("Error: " + ex);
+        }
+    }
 }
 

@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Sales Reciept" language="groovy" pageWidth="252" pageHeight="504" whenNoDataType="BlankPage" columnWidth="214" leftMargin="19" rightMargin="19" topMargin="19" bottomMargin="19" isIgnorePagination="true" uuid="83c7f031-74e9-464b-ac80-7ec695a2cb72">
 	<property name="ireport.zoom" value="4.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="138"/>
+	<property name="ireport.x" value="62"/>
+	<property name="ireport.y" value="43"/>
 	<subDataset name="dataset1" uuid="9f75a6cc-b6a4-4425-8388-8c01355cbf94"/>
 	<parameter name="saleID" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[$P{saleID}]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT unique
-     "JGMG_VIEW_TRANSACTION"."PRODUCTID",
-     "JGMG_VIEW_TRANSACTION"."TITLE",
-     JGMG_COSTS."PRICE",
-     "JGMG_VIEW_TRANSACTION"."Sale Date",
-     "JGMG_VIEW_TRANSACTION".saleID,
-     "JGMG_VIEW_TRANSACTION".total,
-     "JGMG_VIEW_TRANSACTION".quantity
+		<![CDATA[SELECT
+     PRODUCTID,
+     TITLE,
+     PRICE,
+     "Sale Date",
+     saleID,
+     total,
+     quantity,
+sdate,
+edate
 
 FROM
-     "WINTER342"."JGMG_PRODUCT" JGMG_PRODUCT_A INNER JOIN "WINTER342"."JGMG_COSTS" JGMG_COSTS ON JGMG_PRODUCT_A."PRODUCTID" = JGMG_COSTS."PRODUCTID"
-     INNER JOIN "JGMG_VIEW_TRANSACTION" ON JGMG_PRODUCT_A."PRODUCTID" = "JGMG_VIEW_TRANSACTION"."PRODUCTID"
-     AND JGMG_PRODUCT_A."TITLE" = "JGMG_VIEW_TRANSACTION"."TITLE"
+     (JGMG_PRODUCT NATURAL JOIN JGMG_COSTS) NATURAL JOIN JGMG_VIEW_TRANSACTION
+
 WHERE
      saleID = $P{saleID}
- AND ("Sale Date" BETWEEN sDate AND to_Date(NVL(eDate, sysdate)))]]>
+     AND "Sale Date" between sdate and edate]]>
 	</queryString>
 	<field name="PRODUCTID" class="java.math.BigDecimal"/>
 	<field name="TITLE" class="java.lang.String"/>
@@ -32,6 +33,8 @@ WHERE
 	<field name="SALEID" class="java.math.BigDecimal"/>
 	<field name="TOTAL" class="java.math.BigDecimal"/>
 	<field name="QUANTITY" class="java.math.BigDecimal"/>
+	<field name="SDATE" class="java.sql.Timestamp"/>
+	<field name="EDATE" class="java.sql.Timestamp"/>
 	<background>
 		<band/>
 	</background>
@@ -39,7 +42,7 @@ WHERE
 		<band height="40">
 			<image>
 				<reportElement x="65" y="0" width="116" height="40" uuid="1ba0b70f-0f3e-4427-9381-e7bd7394328b"/>
-				<imageExpression><![CDATA["C:\\Users\\Admin\\Documents\\NetBeansProjects\\Database\\src\\treble-clef.jpg"]]></imageExpression>
+				<imageExpression><![CDATA["treble-clef.jpg"]]></imageExpression>
 			</image>
 			<elementGroup>
 				<elementGroup>

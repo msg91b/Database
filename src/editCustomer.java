@@ -1,7 +1,6 @@
 
-import java.awt.event.KeyEvent;
 import java.awt.event.KeyAdapter;
-import javax.swing.ImageIcon;
+import java.awt.event.KeyEvent;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -13,16 +12,34 @@ import javax.swing.ImageIcon;
  *
  * @author mattgaitan
  */
-public class newCustomer extends javax.swing.JFrame {
+public class editCustomer extends javax.swing.JFrame {
 
+    private final String custID;
+    
 
     /**
-     * Creates new form newCustomer
+     * Creates new form editCustomer
+     * @param custID
      */
-    public newCustomer() {
+    public editCustomer(String custID) {
         initComponents();
+        this.custID = custID;
+        
+        Connect connect = new Connect();
+        String[] retData = connect.customerData(custID);
+        for (String retData1 : retData) {
+            System.out.println(retData1);
+        }
+        jTextField1.setText(retData[1]);
+        jTextField8.setText(retData[2]);
+        jTextField2.setText(retData[3]);
+        jTextField3.setText(retData[4]);
+        jTextField4.setText(retData[5]);
+        jTextField5.setText(retData[6]);
+        jTextField6.setText(retData[7]);
+        jTextField7.setText(retData[8].substring(0, 3) + "-" + retData[8].substring(3, 6) + "-" + retData[8].substring(6, 10));
+        
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -34,45 +51,28 @@ public class newCustomer extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jTextField8 = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
         jTextField7 = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jTextField3 = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jTextField4 = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jTextField5 = new javax.swing.JTextField();
         jToggleButton1 = new javax.swing.JToggleButton();
-        jTextField8 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("New Customer");
-        setAlwaysOnTop(true);
-        setAutoRequestFocus(false);
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jLabel1.setText("New Customer");
-
-        jLabel2.setText("Name:");
-
-        jLabel3.setText("Address:");
-
-        jLabel4.setText("City:");
-
-        jLabel5.setText("State:");
-
-        jLabel6.setText("Zip:");
-
-        jLabel7.setText("Email:");
-
-        jLabel8.setText("Phone Number:");
+        jLabel1.setText("Update Customer");
 
         jTextField1.setText("First");
         jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -81,33 +81,17 @@ public class newCustomer extends javax.swing.JFrame {
             }
         });
 
-        jTextField2.setText("xxxx Example St");
-        jTextField2.addFocusListener(new java.awt.event.FocusAdapter() {
+        jLabel2.setText("Name:");
+
+        jTextField8.setText("Last");
+        jTextField8.setRequestFocusEnabled(false);
+        jTextField8.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField2FocusGained(evt);
+                jTextField8FocusGained(evt);
             }
         });
 
-        jTextField3.setText("Somewhere");
-        jTextField3.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField3FocusGained(evt);
-            }
-        });
-
-        jTextField4.setText("CA");
-        jTextField4.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField4FocusGained(evt);
-            }
-        });
-
-        jTextField5.setText("XXXXX");
-        jTextField5.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField5FocusGained(evt);
-            }
-        });
+        jLabel7.setText("Email:");
 
         jTextField6.setText("example@website.com");
         jTextField6.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -123,18 +107,48 @@ public class newCustomer extends javax.swing.JFrame {
 
         jTextField7.setText("xxx-xxx-xxxx");
 
-        jToggleButton1.setText("Add Customer");
-        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton1ActionPerformed(evt);
+        jLabel8.setText("Phone Number:");
+
+        jTextField2.setText("xxxx Example St");
+        jTextField2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField2FocusGained(evt);
             }
         });
 
-        jTextField8.setText("Last");
-        jTextField8.setRequestFocusEnabled(false);
-        jTextField8.addFocusListener(new java.awt.event.FocusAdapter() {
+        jLabel3.setText("Address:");
+
+        jTextField3.setText("Somewhere");
+        jTextField3.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField8FocusGained(evt);
+                jTextField3FocusGained(evt);
+            }
+        });
+
+        jLabel4.setText("City:");
+
+        jTextField4.setText("CA");
+        jTextField4.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField4FocusGained(evt);
+            }
+        });
+
+        jLabel5.setText("State:");
+
+        jLabel6.setText("Zip:");
+
+        jTextField5.setText("XXXXX");
+        jTextField5.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField5FocusGained(evt);
+            }
+        });
+
+        jToggleButton1.setText("Update Customer");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
             }
         });
 
@@ -147,7 +161,6 @@ public class newCustomer extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(118, 118, 118)
@@ -158,7 +171,8 @@ public class newCustomer extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel1))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(85, 85, 85)
@@ -178,7 +192,7 @@ public class newCustomer extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
                             .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(84, Short.MAX_VALUE))
+                .addContainerGap(85, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -264,6 +278,13 @@ public class newCustomer extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTextField4FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField4FocusGained
+        // TODO add your handling code here:
+        if(jTextField1.getText().compareTo("CA") == 0){
+            jTextField1.selectAll();
+        }
+    }//GEN-LAST:event_jTextField4FocusGained
+
     private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField6ActionPerformed
@@ -273,29 +294,7 @@ public class newCustomer extends javax.swing.JFrame {
         if(jTextField1.getText().compareTo("example@website.com") == 0){
             jTextField1.selectAll();
         }
-        
     }//GEN-LAST:event_jTextField6FocusGained
-
-    private void jTextField2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusGained
-        // TODO add your handling code here:
-        if(jTextField1.getText().compareTo("xxxx Example St") == 0){
-            jTextField1.selectAll();
-        }
-    }//GEN-LAST:event_jTextField2FocusGained
-
-    private void jTextField3FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField3FocusGained
-        // TODO add your handling code here:
-        if(jTextField1.getText().compareTo("Somewhere") == 0){
-            jTextField1.selectAll();
-        }
-    }//GEN-LAST:event_jTextField3FocusGained
-
-    private void jTextField4FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField4FocusGained
-        // TODO add your handling code here:
-        if(jTextField1.getText().compareTo("CA") == 0){
-            jTextField1.selectAll();
-        }
-    }//GEN-LAST:event_jTextField4FocusGained
 
     private void jTextField5FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField5FocusGained
         // TODO add your handling code here:
@@ -303,13 +302,6 @@ public class newCustomer extends javax.swing.JFrame {
             jTextField1.selectAll();
         }
     }//GEN-LAST:event_jTextField5FocusGained
-
-    private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
-        // TODO add your handling code here:
-        if(jTextField1.getText().compareTo("First") == 0){
-            jTextField1.selectAll();
-        }
-    }//GEN-LAST:event_jTextField1FocusGained
 
     private void jTextField8FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField8FocusGained
         // TODO add your handling code here:
@@ -323,6 +315,7 @@ public class newCustomer extends javax.swing.JFrame {
 
         String fname = jTextField1.getText(); // first name
         String lname = jTextField8.getText(); // last name
+        System.out.println(lname);
         String address = jTextField2.getText(); //Address
         String city = jTextField3.getText(); // city
         String state = jTextField4.getText(); //state
@@ -330,23 +323,43 @@ public class newCustomer extends javax.swing.JFrame {
         String email = jTextField6.getText(); // Email
         String phone = jTextField7.getText(); //phone
         Connect con = new Connect();
-        if(fname.length()>1 && lname.length() > 1 && address.length() > 1 && 
-                ("0123456789").contains(address.subSequence(0, 1)) && city.length() >1 &&
-                state.length() > 1 && state.length() < 3 && email.length() > 1 &&
-                phone.length() > 1 && fname.compareTo("First") != 0 && lname.compareTo("Last") != 0 &&
-                address.compareTo("xxxx Example St") != 0 && city.compareTo("Somewhere") != 0 &&
-                email.compareTo("example@website.com") != 0 &&
-                phone.compareTo("xxx-xxx-xxxx") != 0){
+        if(fname.length()>1 && lname.length() > 1 && address.length() > 1 &&
+            ("0123456789").contains(address.subSequence(0, 1)) && city.length() >1 &&
+            state.length() > 1 && state.length() < 3 && email.length() > 1 &&
+            phone.length() > 1 && fname.compareTo("First") != 0 && lname.compareTo("Last") != 0 &&
+            address.compareTo("xxxx Example St") != 0 && city.compareTo("Somewhere") != 0 &&
+            email.compareTo("example@website.com") != 0 &&
+            phone.compareTo("xxx-xxx-xxxx") != 0){
             phone = phone.substring(0,3) +""+ phone.substring(4,7) +""+ phone.substring(8,12);
             System.out.println("phone: " + phone);
-        con.addCustomer(fname, lname, address, city, state, zip, email, phone);
-        this.dispose();
+            con.updateCustomer(custID, fname, lname, address, city, state, zip, email, phone);
+            this.dispose();
         }
         else{
             jLabel9.setText("Incorrect Info");
         }
-
     }//GEN-LAST:event_jToggleButton1ActionPerformed
+
+    private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
+        // TODO add your handling code here:
+        if(jTextField1.getText().compareTo("First") == 0){
+            jTextField1.selectAll();
+        }
+    }//GEN-LAST:event_jTextField1FocusGained
+
+    private void jTextField3FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField3FocusGained
+        // TODO add your handling code here:
+        if(jTextField1.getText().compareTo("Somewhere") == 0){
+            jTextField1.selectAll();
+        }
+    }//GEN-LAST:event_jTextField3FocusGained
+
+    private void jTextField2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusGained
+        // TODO add your handling code here:
+        if(jTextField1.getText().compareTo("xxxx Example St") == 0){
+            jTextField1.selectAll();
+        }
+    }//GEN-LAST:event_jTextField2FocusGained
 
     /**
      * @param args the command line arguments
@@ -364,17 +377,21 @@ public class newCustomer extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(newCustomer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(editCustomer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(editCustomer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(editCustomer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(editCustomer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new newCustomer().setVisible(true);
-        });
+        //java.awt.EventQueue.invokeLater(() -> {
+        //    new editCustomer(stringCustID).setVisible(true);
+        //});
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

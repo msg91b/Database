@@ -232,7 +232,7 @@ public class Connect {
                     
                     int searchLength = searchFor.length();
                     if(temp.length() >= searchLength){
-                        if(temp.substring(0, searchLength).compareTo(searchFor) == 0){
+                        if(temp.contains(searchFor) == true){
                             v1.addElement(model.getDataVector().elementAt(row));
                             check = false;
                         }
@@ -566,5 +566,75 @@ public class Connect {
             System.out.println("Error: " + ex);
         }
     }
+    
+    public String[] customerData(String customerID){
+        String[] custData = new String[9];
+        try{
+            rs = st.executeQuery("select * from JGMG_Customer where customerID = " + Integer.parseInt(customerID));
+            if(rs.next()){
+                custData[0] = rs.getString(1);//id
+                custData[1] = rs.getString(2);//fname
+                custData[2] = rs.getString(3);//lanme
+                custData[3] = rs.getString(4) + " " + rs.getString(5);//streetnum + streetname
+                custData[4] = rs.getString(6);//city
+                custData[5] = rs.getString(7);//state
+                custData[6] = rs.getString(8);//zip
+                custData[7] = rs.getString(9);//email
+                custData[8] = rs.getString(10);//phone
+
+                
+            }
+        }
+        catch(SQLException ex){
+            System.out.println("Error: " + ex);
+        }
+        return custData;
+    }
+    
+    public void updateCustomer(String id, String fn, String ln, String a, String c, String s, String z, String e, String p){
+        String[] address = a.split(" ");
+        String streetName = "";
+        
+        //System.out.println(getNextCustomerID());
+        BigDecimal streetNum = BigDecimal.valueOf(Long.parseLong(address[0]));
+        // Concatonate streetName back into a string
+        for(int i = 1; i < address.length; i++){ // need to start at 1 because first element will be street num
+            if(i == address.length-1){
+                streetName += address[i];
+            }
+            else{
+                streetName += address[i] + " ";
+            }
+        }
+        
+        BigDecimal zip = BigDecimal.valueOf(Long.parseLong(z));
+        BigDecimal phone = null;
+        if(p.compareTo("") != 0){
+            phone = BigDecimal.valueOf(Long.parseLong(p));
+        }   
+        
+        System.out.println(streetName);
+       try{
+        PreparedStatement na = con.prepareStatement("Update JGMG_Customer set fname = ?, lname = ?, "
+                + "streetNum = ?, streetName = ?, city = ?, state = ?, zip = ?, email = ?, phonenumber = ? where customerID = ?");
+        na.setString(1, fn);
+        na.setString(2, ln);
+        na.setBigDecimal(3, streetNum);
+        na.setString(4, streetName);
+        na.setString(5, c);
+        na.setString(6, s);
+        na.setBigDecimal(7, zip);
+        na.setString(8, e);
+        na.setBigDecimal(9, phone);
+        na.setBigDecimal(10, BigDecimal.valueOf(Long.parseLong(id)));
+    
+
+        na.executeUpdate();
+       }
+       catch(SQLException ex){
+           System.out.println("Error: " + ex);
+       }
+    }
+    
 }
 

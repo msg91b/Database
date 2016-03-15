@@ -19,7 +19,8 @@
      city,
      state,
      zip,
-     phoneNumber
+     phoneNumber,
+     SUPPLIERNAME
 FROM
     JGMG_VIEW_ORDERS natural join JGMG_Supplier, JGMG_Product natural join JGMG_costs
 WHERE
@@ -39,6 +40,7 @@ WHERE
 	<field name="STATE" class="java.lang.String"/>
 	<field name="ZIP" class="java.math.BigDecimal"/>
 	<field name="PHONENUMBER" class="java.math.BigDecimal"/>
+	<field name="SUPPLIERNAME" class="java.lang.String"/>
 	<variable name="SumTotal" class="java.lang.Float" resetType="Page" calculation="Sum">
 		<variableExpression><![CDATA[($F{PRICE} - $F{PRICE} *0.2) * $F{QUANTITY}]]></variableExpression>
 	</variable>
@@ -57,12 +59,12 @@ WHERE
 					<text><![CDATA[INVOICE]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Transparent" x="407" y="56" width="78" height="16" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="eb0baa51-75e7-4c83-827b-69b69508e6f8"/>
+					<reportElement mode="Transparent" x="393" y="56" width="92" height="16" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="eb0baa51-75e7-4c83-827b-69b69508e6f8"/>
 					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
 						<font fontName="SansSerif" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single"/>
 					</textElement>
-					<text><![CDATA[Date:]]></text>
+					<text><![CDATA[Order Date:]]></text>
 				</staticText>
 				<textField pattern="" isBlankWhenNull="false">
 					<reportElement mode="Transparent" x="485" y="56" width="69" height="16" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="8a0a2169-e5a7-4180-83c0-29745637ff4b"/>
@@ -96,11 +98,27 @@ WHERE
 					</textElement>
 					<textFieldExpression><![CDATA[$F{PHONENUMBER}.toString().substring(0,3) + "-" + $F{PHONENUMBER}.toString().substring(3,6) + "-" + $F{PHONENUMBER}.toString().substring(6,10)]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement mode="Transparent" x="393" y="72" width="92" height="16" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="e9948c40-3011-4af4-ad1c-050cf0c0d4ed"/>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[Shipment Date:]]></text>
+				</staticText>
+				<textField pattern="" isBlankWhenNull="false">
+					<reportElement mode="Transparent" x="485" y="72" width="69" height="16" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="d977b28e-4c90-4f4d-b39b-1a71713bb4e8"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new SimpleDateFormat("MM/dd/yyyy").format($F{CDATE}+3)]]></textFieldExpression>
+				</textField>
 			</frame>
 			<textField>
-				<reportElement x="5" y="8" width="69" height="16" forecolor="#FFFFFF" uuid="919c10d3-43b2-4e1e-845b-ba50f70c4ef5"/>
+				<reportElement x="5" y="8" width="95" height="16" forecolor="#FFFFFF" uuid="919c10d3-43b2-4e1e-845b-ba50f70c4ef5"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA["SupplierID:  " + $F{SUPPLIERID}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{SUPPLIERNAME}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

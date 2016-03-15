@@ -144,11 +144,11 @@ public class newOrder extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Title", "Quantity"
+                "ProductID", "Title", "Quantity"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -218,17 +218,17 @@ public class newOrder extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 144, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addGap(18, 18, 18)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addGap(25, 25, 25))
         );
 
@@ -262,18 +262,21 @@ public class newOrder extends javax.swing.JFrame {
                 boolean test = false;
                 
                 for(int i = 0; i < model.getRowCount(); i++){
-                    if(model.getValueAt(i, 0).toString().compareTo(jComboBox1.getSelectedItem().toString()) == 0){
-                        int currentValue = Integer.parseInt(model.getValueAt(i, 1).toString());
+                    if(model.getValueAt(i, 1).toString().compareTo(jComboBox1.getSelectedItem().toString()) == 0){
+                        int currentValue = Integer.parseInt(model.getValueAt(i, 2).toString());
                         int valueToAdd = Integer.parseInt(jTextField1.getText());
-                        model.setValueAt(currentValue + valueToAdd, i, 1);
+                        model.setValueAt(currentValue + valueToAdd, i, 2);
                         test = true;
                     }
                 }
                     
                 //add element
                 if(!test){
+                    Connect connect = new Connect();
                     Vector row = new Vector();
-                    row.addElement(jComboBox1.getSelectedItem().toString());
+                    String Title = jComboBox1.getSelectedItem().toString();
+                    row.addElement(connect.getProductID(Title));
+                    row.addElement(Title);
                     row.addElement(jTextField1.getText());
                     model.addRow(row);
                     jTable1.setModel(model);
@@ -311,12 +314,17 @@ public class newOrder extends javax.swing.JFrame {
         // TODO add your handling code here:
         Connect connect = new Connect();
         BigDecimal orderID = connect.getNextOrderID();
+        System.out.println(orderID);
         String supplierID = jComboBox2.getSelectedItem().toString();
+        System.out.println(supplierID);
         System.out.println("" + jTable1.getRowCount());
         for(int i = 0; i < jTable1.getRowCount(); i++){
-            String title = jTable1.getValueAt(i, 0).toString();
-            String productID = connect.getProductID(title);
-            String quantity = jTable1.getValueAt(i, 1).toString();
+            String title = jTable1.getValueAt(i, 1).toString();
+            String productID = jTable1.getValueAt(i,0).toString();
+            String quantity = jTable1.getValueAt(i, 2).toString();
+            System.out.println(title);
+            System.out.println(productID);
+            System.out.println(quantity);
             connect.addOrder(orderID, supplierID, productID, title, quantity);
         }
         jDialog1.dispose();
